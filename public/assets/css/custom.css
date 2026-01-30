@@ -1,0 +1,23 @@
+/* Bethsaida Custom Styles */
+
+/* Primary Button - Bethsaida Blue */
+.btn-bethsaida {
+    background-color: #203D76 !important;
+    border-color: #203D76 !important;
+    color: #ffffff !important;
+}
+.btn-bethsaida:hover,
+.btn-bethsaida:focus {
+    background-color: #1a3261 !important;
+    border-color: #1a3261 !important;
+}
+
+/* Sidebar Active Menu */
+.menu-link.active {
+    background-color: #203D76 !important;
+    color: #ffffff !important;
+}
+.menu-link.active .menu-title,
+.menu-link.active .menu-icon i {
+    color: #ffffff !important;
+}

@@ -1,0 +1,31 @@
+// Fonts
+// @import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// Bethsaida Custom Styles
+.btn-bethsaida {
+    background-color: #203D76 !important;
+    border-color: #203D76 !important;
+    color: #ffffff !important;
+    
+    &:hover,
+    &:focus {
+        background-color: #1a3261 !important;
+        border-color: #1a3261 !important;
+    }
+}
+
+.menu-link.active {
+    background-color: #203D76 !important;
+    color: #ffffff !important;
+    
+    .menu-title,
+    .menu-icon i {
+        color: #ffffff !important;
+    }
+}

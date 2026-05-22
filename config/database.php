@@ -113,6 +113,22 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'employee_sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DB_MSSQL_URL'),
+            'host' => env('DB_MSSQL_HOST', 'localhost'),
+            'port' => env('DB_MSSQL_PORT', '1433'),
+            'database' => env('DB_MSSQL_DATABASE', 'laravel'),
+            'username' => env('DB_MSSQL_USERNAME', 'root'),
+            'password' => env('DB_MSSQL_PASSWORD', ''),
+            'charset' => env('DB_MSSQL_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => filter_var(env('DB_MSSQL_ENCRYPT', false), FILTER_VALIDATE_BOOLEAN) ? 'yes' : 'no',
+            'trust_server_certificate' => filter_var(env('DB_MSSQL_TRUST_SERVER_CERTIFICATE', true), FILTER_VALIDATE_BOOLEAN) ? 'yes' : 'no',
+            'login_timeout' => (int) env('DB_MSSQL_LOGIN_TIMEOUT', 5),
+        ],
+
     ],
 
     /*

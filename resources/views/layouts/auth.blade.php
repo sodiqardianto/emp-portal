@@ -1,58 +1,126 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title', config('app.name'))</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
     @stack('styles')
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-    @vite(['resources/css/custom.css'])
-    <style>
-        .auth-card-bg {
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-        }
-    </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body id="kt_body" class="auth-bg bgi-size-cover bgi-attachment-fixed bgi-position-center">
-    <script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 
-    <div class="d-flex flex-column flex-root">
-        <style>
-            body { background-image: url('{{ asset('assets/media/illustrations/auth/bg10.jpeg') }}'); }
-            [data-bs-theme="dark"] body { background-image: url('{{ asset('assets/media/illustrations/auth/bg10-dark.jpeg') }}'); }
-        </style>
-
-        <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-            <div class="d-flex flex-lg-row-fluid">
-                <div class="d-flex flex-column flex-center pb-0 pb-lg-10 p-10 w-100">
-                    <img class="theme-light-show mx-auto mw-100 w-150px w-lg-700px mb-10 mb-lg-20" src="{{ asset('assets/media/logos/Logo_Bethsaida_Hospitals.png') }}" alt="" />
-                    <img class="theme-dark-show mx-auto mw-100 w-150px w-lg-300px mb-10 mb-lg-20" src="{{ asset('assets/media/illustrations/auth/agency-dark.png') }}" alt="" />
-                    <h1 class="text-gray-800 fs-2qx fw-bold text-center mb-7">Bethsaida Hospitals Medical Check Up</h1>
-                    <div class="text-gray-600 fs-base text-center fw-semibold">Manage patient data, examination schedules, and MCU results
-                    <br />easily and efficiently. An integrated system to
-                    <br />support better healthcare services.</div>
+<body class="login-body">
+    <div class="login-wrapper">
+        {{-- ========== LEFT PANEL ========== --}}
+        <div class="login-left-panel">
+            <div class="login-left-inner">
+                {{-- Logo --}}
+                <div class="login-logo">
+                    <div class="login-logo-icon">
+                        <img src="{{ asset('assets/media/logos/logo_only_transparant.png') }}" alt="Bethsaida" />
+                    </div>
+                    <div class="login-logo-text">
+                        <span class="login-logo-title">Bethsaida</span>
+                        <span class="login-logo-subtitle">EMPLOYEE PORTAL</span>
+                    </div>
                 </div>
-            </div>
 
-            <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end p-12">
-                <div class="auth-card-bg d-flex flex-column flex-center rounded-4 w-md-600px p-10">
-                    <div class="d-flex flex-center flex-column align-items-stretch h-lg-100 w-md-400px">
-                        <div class="d-flex flex-center flex-column flex-column-fluid pb-15 pb-lg-20">
-                            @yield('content')
+                {{-- Hero --}}
+                <div class="login-hero">
+                    <div class="login-hero-badge">
+                        <span class="login-hero-badge-dot"></span>
+                        PORTAL KARYAWAN
+                    </div>
+                    <h1 class="login-hero-title">Selamat Datang,<br />Tim Bethsaida</h1>
+                    <p class="login-hero-desc">
+                        Akses portal eksklusif untuk karyawan Bethsaida Hospitals. Kelola jadwal, dan informasi penting
+                        lainnya.
+                    </p>
+                </div>
+
+                {{-- Feature Cards --}}
+                <div class="login-features">
+                    <div class="login-feature-card">
+                        <div class="login-feature-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <div class="login-feature-text">
+                            <strong>Aman &amp; Terenkripsi</strong>
+                            <span>Data karyawan terlindungi sepenuhnya</span>
+                        </div>
+                    </div>
+                    <div class="login-feature-card">
+                        <div class="login-feature-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="login-feature-text">
+                            <strong>Respons Instan</strong>
+                            <span>Akses cepat ke semua fitur</span>
+                        </div>
+                    </div>
+                    <div class="login-feature-card">
+                        <div class="login-feature-icon">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="login-feature-text">
+                            <strong>Tersedia 24/7</strong>
+                            <span>Siap membantu kapan saja</span>
                         </div>
                     </div>
                 </div>
+
+                {{-- Footer --}}
+                <div class="login-left-footer">
+                    &copy; {{ date('Y') }} Bethsaida Hospitals · <em>Hospital with Heart</em>
+                </div>
+            </div>
+
+            {{-- Decorative elements --}}
+            <div class="login-left-decor-circle login-left-decor-circle--1"></div>
+            <div class="login-left-decor-circle login-left-decor-circle--2"></div>
+            <div class="login-left-decor-grid"></div>
+        </div>
+
+        {{-- ========== RIGHT PANEL ========== --}}
+        <div class="login-right-panel">
+            {{-- Dot pattern background --}}
+            <div class="login-right-dots"></div>
+
+            {{-- Mobile logo (hidden on desktop) --}}
+            <div class="login-mobile-logo">
+                <div class="login-logo-icon login-logo-icon--sm">
+                    <img src="{{ asset('assets/media/logos/logo_only_transparant.png') }}" alt="Bethsaida" />
+                </div>
+                <div class="login-logo-text">
+                    <span class="login-logo-title login-logo-title--dark">Bethsaida</span>
+                    <span class="login-logo-subtitle login-logo-subtitle--dark">EMPLOYEE PORTAL</span>
+                </div>
+            </div>
+
+            {{-- Form Card --}}
+            <div class="login-form-card">
+                @yield('content')
             </div>
         </div>
     </div>
 
     <script>var hostUrl = "{{ asset('assets') }}/";</script>
-    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     @stack('scripts')
 </body>
+
 </html>

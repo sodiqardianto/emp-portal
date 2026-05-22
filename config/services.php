@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'employee_menu' => [
+        'branch' => env('EMPLOYEE_MENU_BRANCH', 'BHI'),
+    ],
+
 ];

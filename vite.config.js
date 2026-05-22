@@ -5,8 +5,9 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/css/custom.css',
+                'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/views/permissions/permissions-table.js',
             ],
             refresh: true,
         }),

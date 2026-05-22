@@ -1,0 +1,632 @@
+/* =========================================================
+   App Shell Styles – Bethsaida Employee Portal
+   Custom CSS (Bootstrap 5 baseline) + Glassmorphism accents
+   Scope: body.app-shell (header, sidebar, footer only)
+   ========================================================= */
+
+/* ---------- Design Tokens ---------- */
+:root {
+    --bs-primary-bethsaida: #203D76;
+    --bs-primary-bethsaida-dark: #142852;
+    --bs-primary-bethsaida-light: #2f5aa8;
+    --bethsaida-accent: #00A9E0;
+    --bethsaida-danger: #DF2127;
+
+    --shell-header-height: 68px;
+    --shell-sidebar-width: 272px;
+    --shell-gap: 24px;
+
+    --shell-surface: rgba(255, 255, 255, 0.72);
+    --shell-surface-strong: rgba(255, 255, 255, 0.88);
+    --shell-border: rgba(32, 61, 118, 0.12);
+
+    /* Dynamic offset, akan diubah saat sidebar collapse */
+    --shell-content-offset: var(--shell-sidebar-width);
+}
+
+/* ---------- Body ---------- */
+.app-shell {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #1f2937;
+    background: #eef3fb;
+    background-image:
+        radial-gradient(circle at 0% 0%, rgba(32, 61, 118, 0.18) 0%, transparent 38%),
+        radial-gradient(circle at 100% 0%, rgba(0, 169, 224, 0.18) 0%, transparent 42%),
+        radial-gradient(circle at 100% 100%, rgba(32, 61, 118, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 0% 100%, rgba(0, 169, 224, 0.1) 0%, transparent 45%);
+    background-attachment: fixed;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+/* Sidebar collapsed (desktop) */
+.app-shell.app-sidebar-collapsed {
+    --shell-content-offset: 0px;
+}
+
+/* ---------- Layout Shell ---------- */
+.app-shell-root {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+.app-shell-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    transition: padding-left 0.25s ease;
+    padding-left: var(--shell-content-offset);
+}
+
+.app-shell-content {
+    flex: 1 1 auto;
+    padding: calc(var(--shell-header-height) + var(--shell-gap)) var(--shell-gap) var(--shell-gap);
+    min-width: 0;
+}
+
+/* ============================================
+   HEADER (light glass)
+   ============================================ */
+.app-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: var(--shell-content-offset);
+    height: var(--shell-header-height);
+    z-index: 1030;
+    display: flex;
+    align-items: stretch;
+    background: var(--shell-surface-strong);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border-bottom: 1px solid var(--shell-border);
+    box-shadow: 0 4px 20px rgba(32, 61, 118, 0.08);
+    transition: left 0.25s ease;
+}
+
+.app-header-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--shell-gap);
+    gap: 16px;
+}
+
+.app-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.app-header-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--shell-border);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+    color: var(--bs-primary-bethsaida);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+    font-size: 16px;
+}
+.app-header-toggle:hover,
+.app-header-toggle:focus {
+    background: rgba(32, 61, 118, 0.08);
+    border-color: rgba(32, 61, 118, 0.2);
+    color: var(--bs-primary-bethsaida-dark);
+}
+
+.app-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-header-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--shell-border);
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(6px);
+    color: #475569;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    font-size: 16px;
+}
+.app-header-btn:hover,
+.app-header-btn:focus {
+    background: rgba(32, 61, 118, 0.08);
+    border-color: rgba(32, 61, 118, 0.2);
+    color: var(--bs-primary-bethsaida);
+}
+.app-header-btn::after {
+    display: none;
+}
+
+.app-header-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.95);
+}
+
+/* Dropdown overrides */
+.app-header-dropdown {
+    min-width: 260px;
+    padding: 8px;
+    border: 1px solid var(--shell-border);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 12px 32px rgba(20, 40, 82, 0.15);
+}
+.app-header-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px 12px;
+    border-bottom: 1px solid var(--shell-border);
+    margin-bottom: 6px;
+}
+.app-header-dropdown-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--bs-primary-bethsaida), var(--bs-primary-bethsaida-dark));
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+.app-header-dropdown-name {
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+    line-height: 1.2;
+    margin: 0;
+}
+.app-header-dropdown-meta {
+    font-size: 12px;
+    color: #6b7280;
+    display: block;
+    margin-top: 2px;
+    word-break: break-word;
+}
+.app-header-dropdown .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #374151;
+    background: transparent;
+    border: 0;
+    width: 100%;
+    text-align: left;
+}
+.app-header-dropdown .dropdown-item:hover,
+.app-header-dropdown .dropdown-item:focus {
+    background: rgba(32, 61, 118, 0.08);
+    color: var(--bs-primary-bethsaida);
+}
+.app-header-dropdown .dropdown-item i {
+    width: 18px;
+    text-align: center;
+    color: #6b7280;
+}
+.app-header-dropdown .dropdown-item:hover i,
+.app-header-dropdown .dropdown-item:focus i {
+    color: var(--bs-primary-bethsaida);
+}
+
+/* ============================================
+   SIDEBAR (glassmorphism, biru Bethsaida)
+   ============================================ */
+.app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--shell-sidebar-width);
+    z-index: 1040;
+    display: flex;
+    flex-direction: column;
+    color: rgba(255, 255, 255, 0.88);
+    background: linear-gradient(
+        180deg,
+        #1a315e 0%,
+        #142852 60%,
+        #0d1d3f 100%
+    );
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 8px 0 28px rgba(13, 29, 63, 0.28);
+    transition: transform 0.25s ease;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Glow blobs */
+.app-sidebar::before,
+.app-sidebar::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+}
+.app-sidebar::before {
+    width: 260px;
+    height: 260px;
+    top: -80px;
+    right: -80px;
+    background: radial-gradient(circle, rgba(0, 169, 224, 0.35) 0%, rgba(0, 169, 224, 0) 70%);
+}
+.app-sidebar::after {
+    width: 220px;
+    height: 220px;
+    bottom: -60px;
+    left: -60px;
+    background: radial-gradient(circle, rgba(47, 90, 168, 0.35) 0%, rgba(47, 90, 168, 0) 70%);
+}
+
+/* Desktop collapsed: geser sidebar keluar */
+@media (min-width: 992px) {
+    .app-shell.app-sidebar-collapsed .app-sidebar {
+        transform: translateX(-100%);
+    }
+}
+
+.app-sidebar-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.app-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    min-height: var(--shell-header-height);
+}
+.app-sidebar-brand-logo {
+    height: 36px;
+    width: auto;
+    padding: 3px 6px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.app-sidebar-brand-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.app-sidebar-brand-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+}
+.app-sidebar-brand-subtitle {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* Scrollable menu area */
+.app-sidebar-menu {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 14px 12px 20px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+.app-sidebar-menu::-webkit-scrollbar { width: 6px; }
+.app-sidebar-menu::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+}
+.app-sidebar-menu::-webkit-scrollbar-track { background: transparent; }
+
+.app-menu,
+.app-menu-sub {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.app-menu-item {
+    margin: 2px 0;
+}
+.app-menu-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    background: transparent;
+    border: 0;
+    width: 100%;
+    text-align: left;
+}
+.app-menu-link:hover,
+.app-menu-link:focus {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+}
+.app-menu-link.active {
+    color: #ffffff;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 169, 224, 0.28) 0%,
+        rgba(47, 90, 168, 0.28) 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 4px 14px rgba(0, 169, 224, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+.app-menu-link.active .app-menu-icon {
+    color: #7cdcff;
+}
+.app-menu-icon {
+    width: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.65);
+    flex-shrink: 0;
+}
+.app-menu-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.app-menu-arrow {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.55);
+    transition: transform 0.2s ease;
+}
+.app-menu-item[aria-expanded="true"] > .app-menu-link .app-menu-arrow {
+    transform: rotate(90deg);
+}
+
+/* Sub-menu */
+.app-menu-sub {
+    display: none;
+    margin-left: 12px;
+    padding: 4px 0 4px 14px;
+    border-left: 1px dashed rgba(255, 255, 255, 0.14);
+}
+.app-menu-item[aria-expanded="true"] > .app-menu-sub {
+    display: block;
+}
+.app-menu-sub .app-menu-link {
+    padding: 8px 10px 8px 6px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.72);
+}
+.app-menu-sub .app-menu-link.active {
+    background: rgba(0, 169, 224, 0.18);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+}
+.app-menu-sub .app-menu-icon {
+    width: 18px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+}
+.app-menu-sub .app-menu-link.active .app-menu-icon {
+    color: #7cdcff;
+}
+.app-menu-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    display: inline-block;
+    flex-shrink: 0;
+}
+.app-menu-sub .app-menu-link.active .app-menu-bullet {
+    background: #7cdcff;
+}
+
+/* ----- Sidebar footer (user card) ----- */
+.app-sidebar-footer {
+    padding: 14px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(13, 29, 63, 0.3);
+    backdrop-filter: blur(6px);
+}
+.app-sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+.app-sidebar-user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2f5aa8, #00A9E0);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 169, 224, 0.35);
+}
+.app-sidebar-user-copy {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+.app-sidebar-user-name {
+    display: block;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.app-sidebar-user-meta {
+    display: block;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 2px;
+}
+.app-sidebar-user-action {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    flex-shrink: 0;
+}
+.app-sidebar-user-action:hover,
+.app-sidebar-user-action:focus {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+}
+.app-sidebar-user-action::after { display: none; }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.app-footer {
+    margin-top: auto;
+    padding: 16px var(--shell-gap);
+    border-top: 1px solid var(--shell-border);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 13px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.app-footer a {
+    color: var(--bs-primary-bethsaida);
+    text-decoration: none;
+    font-weight: 500;
+}
+.app-footer a:hover {
+    color: var(--bethsaida-accent);
+}
+
+/* ============================================
+   SIDEBAR BACKDROP (mobile)
+   ============================================ */
+.app-sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 29, 63, 0.4);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 1035;
+}
+body.app-sidebar-open .app-sidebar-backdrop {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 991.98px) {
+    :root {
+        --shell-content-offset: 0px;
+    }
+    .app-header {
+        left: 0;
+    }
+    .app-sidebar {
+        transform: translateX(-100%);
+        box-shadow: none;
+    }
+    body.app-sidebar-open .app-sidebar {
+        transform: translateX(0);
+        box-shadow: 8px 0 28px rgba(13, 29, 63, 0.4);
+    }
+    body.app-sidebar-open {
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 575.98px) {
+    :root {
+        --shell-gap: 16px;
+    }
+    .app-shell-content {
+        padding: calc(var(--shell-header-height) + 12px) var(--shell-gap) var(--shell-gap);
+    }
+    .app-header-actions {
+        gap: 4px;
+    }
+}

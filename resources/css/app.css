@@ -1,35 +1,25 @@
-@import 'tailwindcss';
+/* =========================================================
+   Bethsaida Employee Portal – Main CSS Entry Point
+   =========================================================
+   Semua CSS di-import dari sini.
+   Cukup tambahkan @import baru ketika ada fitur/page baru.
+   Tidak perlu mengubah vite.config.js lagi.
+   ========================================================= */
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+/* Vendor (Bootstrap 5 + Icons + FontAwesome) */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-}
+/* Base / Global */
+@import './custom.css';
 
-/* Bethsaida Custom Styles */
+/* Pages */
+@import './login.css';
+@import './app-shell.css';
 
-/* Primary Button - Bethsaida Blue */
-.btn-bethsaida {
-    background-color: #203D76 !important;
-    border-color: #203D76 !important;
-    color: #ffffff !important;
-}
-.btn-bethsaida:hover,
-.btn-bethsaida:focus {
-    background-color: #1a3261 !important;
-    border-color: #1a3261 !important;
-}
-
-/* Sidebar Active Menu */
-.menu-link.active {
-    background-color: #203D76 !important;
-    color: #ffffff !important;
-}
-.menu-link.active .menu-title,
-.menu-link.active .menu-icon i {
-    color: #ffffff !important;
-}
+/* Tambahkan import baru di bawah sesuai kebutuhan, contoh:
+   @import './dashboard.css';
+   @import './profile.css';
+   @import './attendance.css';
+*/

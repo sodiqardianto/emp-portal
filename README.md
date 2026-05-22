@@ -1,59 +1,202 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bethsaida Employee Portal (New)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Rewrite dari Employee Portal CI3/Express ke Laravel 12.
 
-## About Laravel
+## Tech Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend:** Laravel 12, PHP 8.2+
+- **Frontend:** Blade + Bootstrap 5 + Vite
+- **Database:** SQL Server (cross-database: `BackOffice`, `UM`)
+- **Icons:** Bootstrap Icons, Font Awesome 7
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Setup
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```bash
+composer setup
+```
 
-## Learning Laravel
+Atau manual:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+npm install
+npm run build
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Development
 
-## Laravel Sponsors
+```bash
+composer dev
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Menjalankan server, queue, logs, dan Vite secara bersamaan.
 
-### Premium Partners
+## Testing
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+composer test
+```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Arsitektur & Konvensi
 
-## Code of Conduct
+Project ini menggunakan **Repository Pattern** dengan layer yang jelas. Semua developer wajib mengikuti struktur ini.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Struktur Folder
 
-## Security Vulnerabilities
+```
+app/
+├── Models/              → Eloquent models (tabel, relasi, scopes)
+├── Repositories/        → Query & akses database
+├── Services/            → Business logic
+├── Concerns/            → Shared traits (NormalizesStrings, dll)
+├── Http/
+│   ├── Controllers/     → Thin controller, routing ke service
+│   ├── Requests/        → Validasi input (FormRequest)
+│   ├── Resources/       → Format output JSON (JsonResource)
+│   └── Middleware/      → Auth & permission checks
+└── View/
+    └── Composers/       → Data injection ke Blade views
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Aturan Per Layer
 
-## License
+| Layer | Tanggung Jawab | Tidak Boleh |
+|-------|---------------|-------------|
+| **Controller** | Terima request, panggil service, return response/view | Query DB, business logic |
+| **Service** | Business logic, validasi bisnis, orchestrate repository | Langsung query DB, akses HTTP request |
+| **Repository** | Query database (Eloquent/Query Builder) | Business logic, akses request/session |
+| **Model** | Definisi tabel, relasi, scopes, accessors | Business logic berat |
+| **FormRequest** | Validasi input dari user | Business logic |
+| **Resource** | Format data untuk JSON response | Query DB, logic |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Flow Request
+
+```
+Request → Controller → Service → Repository → Database
+                                      ↓
+Response ← Controller ← Service ← Repository
+```
+
+Contoh lengkap: lihat modul **Permission** (`PermissionController` → `PermissionService` → `PermissionRepository` → `Permission` model).
+
+### Membuat Modul Baru
+
+1. **Model** — `app/Models/NamaModel.php`
+   ```php
+   class NamaModel extends Model
+   {
+       protected $connection = 'employee_sqlsrv';
+       protected $table = 'BackOffice.dbo.nama_tabel';
+       protected $primaryKey = 'kolom_pk';
+       protected $keyType = 'string';
+       public $incrementing = false;
+       public $timestamps = false;
+   }
+   ```
+
+2. **Repository** — `app/Repositories/NamaRepository.php`
+   ```php
+   class NamaRepository
+   {
+       public function paginate(array $criteria): LengthAwarePaginator
+       {
+           return NamaModel::query()
+               ->when($criteria['search'], fn ($q, $s) => $q->where('nama', 'like', "%{$s}%"))
+               ->orderBy($criteria['sortBy'], $criteria['sortDir'])
+               ->paginate($criteria['pageSize']);
+       }
+
+       public function findByCode(string $code): ?NamaModel
+       {
+           return NamaModel::where('kode', $code)->first();
+       }
+   }
+   ```
+
+3. **Service** — `app/Services/NamaService.php`
+   ```php
+   class NamaService
+   {
+       use NormalizesStrings;
+
+       public function __construct(private readonly NamaRepository $repository) {}
+
+       public function create(array $data, string $actor): void
+       {
+           // validasi bisnis di sini
+           $this->repository->create($data, $actor);
+       }
+   }
+   ```
+
+4. **FormRequest** — `app/Http/Requests/NamaRequest.php`
+   ```php
+   class NamaRequest extends FormRequest
+   {
+       public function authorize(): bool { return true; }
+
+       public function rules(): array
+       {
+           return [
+               'nama' => ['required', 'string', 'max:200'],
+           ];
+       }
+   }
+   ```
+
+5. **Resource** (jika ada endpoint JSON) — `app/Http/Resources/NamaResource.php`
+   ```php
+   class NamaResource extends JsonResource
+   {
+       public function toArray(Request $request): array
+       {
+           return [
+               'kode' => $this->kode,
+               'nama' => $this->nama,
+           ];
+       }
+   }
+   ```
+
+6. **Controller** — `app/Http/Controllers/NamaController.php`
+   ```php
+   class NamaController extends Controller
+   {
+       public function __construct(private readonly NamaService $service) {}
+
+       public function index(): View
+       {
+           return view('nama.index');
+       }
+
+       public function store(NamaRequest $request): RedirectResponse
+       {
+           $this->service->create($request->validated(), $request->user()->EmployeeCode);
+           return redirect()->route('nama.index')->with('success', 'Berhasil disimpan.');
+       }
+   }
+   ```
+
+7. **Route** — `routes/web.php`
+   ```php
+   Route::prefix('menu/kategori/nama')
+       ->middleware(['auth', 'menu.access:/menu/kategori/nama'])
+       ->group(function (): void {
+           Route::get('/', [NamaController::class, 'index'])->middleware('menu.permission:VIEW');
+           Route::post('/', [NamaController::class, 'store'])->middleware('menu.permission:ADD');
+       });
+   ```
+
+### Hal Penting
+
+- **Jangan sanitize input manual** (regex strip karakter, dll). Laravel parameterized queries sudah aman dari SQL injection.
+- **Gunakan `NormalizesStrings` trait** kalau butuh `trimToNull()` — jangan buat helper sendiri.
+- **Model tanpa timestamps** — database existing tidak pakai `created_at`/`updated_at` Laravel, set `public $timestamps = false`.
+- **Cross-database query** — gunakan full table name di model (`BackOffice.dbo.nama_tabel`), connection di-set di model.
+- **Permission** — gunakan middleware `menu.access` dan `menu.permission` untuk proteksi route.
+- **Styling** — Bootstrap 5 only. Tidak pakai Tailwind.
+- **Semua CSS** di-import dari `resources/css/app.css`. Buat file CSS baru per fitur, lalu import di sana.

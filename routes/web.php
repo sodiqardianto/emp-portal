@@ -42,4 +42,44 @@ Route::middleware('auth')->group(function (): void {
                 ->middleware('menu.permission:DELETE')
                 ->name('permissions.destroy');
         });
+
+    Route::prefix('menu/system/menu-permissions')
+        ->middleware('menu.access:/menu/system/menu-permissions')
+        ->group(function (): void {
+            Route::get('/', [\App\Http\Controllers\MenuPermissionController::class, 'index'])
+                ->middleware('menu.permission:VIEW')
+                ->name('menu-permissions.index');
+            Route::get('/data', [\App\Http\Controllers\MenuPermissionController::class, 'data'])
+                ->middleware('menu.permission:VIEW')
+                ->name('menu-permissions.data');
+            Route::get('/{id}', [\App\Http\Controllers\MenuPermissionController::class, 'show'])
+                ->middleware('menu.permission:VIEW')
+                ->name('menu-permissions.show');
+            Route::put('/{id}', [\App\Http\Controllers\MenuPermissionController::class, 'update'])
+                ->middleware('menu.permission:EDIT')
+                ->name('menu-permissions.update');
+            Route::delete('/{id}', [\App\Http\Controllers\MenuPermissionController::class, 'destroy'])
+                ->middleware('menu.permission:DELETE')
+                ->name('menu-permissions.destroy');
+        });
+
+    Route::prefix('menu/system/hak-akses')
+        ->middleware('menu.access:/menu/system/hak-akses')
+        ->group(function (): void {
+            Route::get('/', [\App\Http\Controllers\EmployeeAccessController::class, 'index'])
+                ->middleware('menu.permission:VIEW')
+                ->name('employee-access.index');
+            Route::get('/data', [\App\Http\Controllers\EmployeeAccessController::class, 'data'])
+                ->middleware('menu.permission:VIEW')
+                ->name('employee-access.data');
+            Route::get('/{employeeCode}', [\App\Http\Controllers\EmployeeAccessController::class, 'edit'])
+                ->middleware('menu.permission:VIEW')
+                ->name('employee-access.edit');
+            Route::put('/{employeeCode}', [\App\Http\Controllers\EmployeeAccessController::class, 'update'])
+                ->middleware('menu.permission:EDIT')
+                ->name('employee-access.update');
+            Route::delete('/{employeeCode}', [\App\Http\Controllers\EmployeeAccessController::class, 'destroy'])
+                ->middleware('menu.permission:DELETE')
+                ->name('employee-access.destroy');
+        });
 });

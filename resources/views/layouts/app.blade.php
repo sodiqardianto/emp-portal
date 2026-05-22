@@ -31,5 +31,11 @@
     </div>
 
     @stack('scripts')
+    <button type="button" class="scroll-to-top" id="scroll-top" aria-label="Scroll to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+    <script>
+    (function(){const b=document.getElementById('scroll-top');window.addEventListener('scroll',()=>b.classList.toggle('visible',window.scrollY>300));b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));})();
+    </script>
 </body>
 </html>
